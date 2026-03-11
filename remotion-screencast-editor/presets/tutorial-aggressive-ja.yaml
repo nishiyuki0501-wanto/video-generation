@@ -1,0 +1,33 @@
+preset_id: tutorial-aggressive-ja-v1
+description: "短尺化重視。ショートや要点ダイジェスト向け。視聴者が既に基礎知識あり前提。"
+
+_extends: tutorial-balanced-ja-v1
+
+cut:
+  min_silence_to_cut_ms: 300     # 短い無音も積極的にカット
+  keep_sentence_pause_ms: 100
+  keep_pre_action_ms: 100
+  keep_post_action_ms: 120
+  merge_gap_under_ms: 150
+  min_kept_clip_ms: 500
+
+speed:
+  spoken_segment_max_speed: 1.15
+  ui_navigation_speed: 1.50
+  repetitive_navigation_speed: 1.75
+  loading_speed: 6.0
+  long_wait_loading_speed: 12.0
+  typing_demo_speed: 1.40
+  mute_audio_above_speed: 1.60   # より早めに音をミュート
+
+zoom:
+  scale_default: 1.35
+  scale_small_ui: 1.60
+  scale_tiny_ui: 1.80
+  min_event_duration_ms: 400
+  min_gap_between_zooms_ms: 300
+
+subtitles:
+  max_chars_per_line: 18         # 短め・インパクト重視
+  min_caption_duration_ms: 700
+  max_caption_duration_ms: 3000

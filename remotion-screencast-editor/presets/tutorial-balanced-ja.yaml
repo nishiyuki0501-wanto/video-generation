@@ -1,0 +1,129 @@
+preset_id: tutorial-balanced-ja-v1
+locale: ja-JP
+content_type: screen_tutorial
+editing_goal: "理解しやすく、テンポが良く、再現可能なチュートリアル動画を自動生成する"
+
+priority_order:
+  - comprehension      # 理解しやすさ
+  - reproducibility    # 再現可能性
+  - visual_clarity     # 視認性
+  - pace               # テンポ
+  - aesthetics         # 演出
+
+global_rules:
+  preserve_all_steps_needed_for_reproduction: true
+  never_cut_inside_a_word: true
+  never_hide_critical_ui_with_subtitles: true
+  if_confidence_is_low_prefer_conservative_edit: true
+  prefer_cut_over_speed_for_dead_silence: true
+  prefer_speed_over_cut_for_loading_or_repetitive_navigation: true
+  do_not_zoom_if_target_is_already_legible: true
+
+video:
+  width: 1920
+  height: 1080
+  fps: 30
+  safe_margin_ratio: 0.08
+  background_color: "#0B0D12"
+
+audio:
+  target_lufs: -16
+  true_peak_db: -1
+  normalize: true
+  denoise: false
+
+analysis:
+  transcription_engine: "faster-whisper"
+  whisper_model: "medium"        # tiny/base/small/medium/large-v3
+  enable_word_timestamps: true
+  enable_vad: true
+  vad_aggressiveness: 2          # 0〜3（3が最も積極的に無音検出）
+  enable_ocr: false              # True にするとEasyOCRが必要
+  enable_cursor_detection: true
+  enable_scene_change_detection: true
+  scene_change_threshold: 30.0   # 値が大きいほど鈍感
+
+cut:
+  min_silence_to_cut_ms: 500     # この長さ以上の無音をカット候補とする
+  keep_sentence_pause_ms: 180    # 文末の自然な間は残す
+  keep_pre_action_ms: 150        # クリック等の前に残すバッファ
+  keep_post_action_ms: 180       # クリック等の後に残すバッファ
+  merge_gap_under_ms: 250        # この間隔以下のkeep区間はマージ
+  min_kept_clip_ms: 700          # keepクリップの最小長さ
+  remove_filler_words_when_safe: false
+  protect_segments_with_click_or_typing: true
+
+speed:
+  spoken_segment_max_speed: 1.10     # 発話区間の上限
+  ui_navigation_speed: 1.35          # 通常UIナビゲーション
+  repetitive_navigation_speed: 1.50  # 繰り返し操作
+  loading_speed: 3.00                # ローディング・待機
+  long_wait_loading_speed: 6.00      # 長い待機（30秒以上）
+  typing_demo_speed: 1.25            # タイピング実演
+  speed_ramp_transition_ms: 160      # 速度切替時のランプ時間
+  mute_audio_above_speed: 1.75       # この倍率以上は音声をミュート
+
+zoom:
+  enabled: true
+  scale_default: 1.28           # 標準ズーム倍率
+  scale_small_ui: 1.45          # 小さいUI向け
+  scale_tiny_ui: 1.60           # 非常に小さいUI向け
+  min_event_duration_ms: 600    # この長さ未満のイベントはズームしない
+  ease_in_ms: 220
+  ease_out_ms: 180
+  roi_padding_ratio: 0.18       # ズーム対象の周囲に取る余白
+  max_zoom_coverage_ratio: 0.70 # 動画全体に対するズーム区間の最大比率
+  avoid_zoom_on_large_panels: true
+  avoid_rapid_consecutive_zoom: true
+  min_gap_between_zooms_ms: 500
+
+subtitles:
+  enabled: true
+  language: "ja"
+  max_lines: 2
+  max_chars_per_line: 22
+  min_caption_duration_ms: 900
+  max_caption_duration_ms: 4200
+  split_on_punctuation: true
+  split_on_semantic_boundaries: true
+  allow_keyword_highlight: true
+  custom_terms:              # この用語は誤認識されやすいので辞書登録を推奨
+    - Claude
+    - Remotion
+    - TypeScript
+    - JavaScript
+    - Python
+    - GitHub
+    - Docker
+    - API
+    - npm
+    - pip
+  style:
+    position: "bottom"
+    font_family: "Noto Sans JP"
+    font_weight: 700
+    font_size: 46
+    line_height: 1.25
+    text_color: "#FFFFFF"
+    keyword_color: "#7DD3FC"
+    stroke_color: "#000000"
+    stroke_width: 6
+    bg_color: "rgba(0,0,0,0.30)"
+    padding_x: 24
+    padding_y: 12
+    border_radius: 12
+
+qa:
+  max_caption_sync_error_ms: 120
+  require_no_clipped_words: true
+  require_subtitle_safe_area: true
+  require_no_unexplained_jump_cut: true
+  require_ui_legibility_after_zoom: true
+  export_preview_first: true
+  preview_duration_limit_sec: 90
+
+fallback_policy:
+  low_transcript_confidence: "keep_original_audio_timing_and_flag"
+  low_zoom_confidence: "disable_zoom_for_segment"
+  low_ui_detection_confidence: "avoid_aggressive_cuts"
+  low_subtitle_confidence: "emit_review_flag"

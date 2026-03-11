@@ -1,0 +1,26 @@
+preset_id: tutorial-safe-ja-v1
+description: "学習重視・削りすぎない。初心者向けコンテンツや丁寧な解説動画に。"
+
+_extends: tutorial-balanced-ja-v1
+
+cut:
+  min_silence_to_cut_ms: 700     # 無音カットを控えめに
+  keep_pre_action_ms: 200
+  keep_post_action_ms: 250
+
+speed:
+  spoken_segment_max_speed: 1.05  # ほぼ等速
+  ui_navigation_speed: 1.20
+  repetitive_navigation_speed: 1.35
+  loading_speed: 2.0
+  long_wait_loading_speed: 4.0
+  typing_demo_speed: 1.10
+
+zoom:
+  scale_default: 1.20
+  scale_small_ui: 1.35
+  scale_tiny_ui: 1.50
+  min_event_duration_ms: 800     # より長いイベントのみズーム
+
+subtitles:
+  max_chars_per_line: 24         # 1行を少し長めに許容
